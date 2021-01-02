@@ -4,16 +4,19 @@ import {User} from "./models/user.model";
 const dbConfig = (): SequelizeModuleOptions => {
     return {
         dialect: 'mysql',
-        host: 'localhost',
-        port: 3306,
-        username: 'root',
-        password: 'root',
-        database: 'test',
-        timezone: '.envAsia/Seoul',
+        host: process.env.DB_HOST,
+        port: +process.env.DB_PORT,
+        username: process.env.DB_USER_NAME,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_DATABASE,
+        timezone: process.env.DB_TIME_ZONE,
         define: {
             timestamps: false
         },
-        models: [User],
+        synchronize: true,
+        models: [
+            User
+        ],
     }
 };
 
