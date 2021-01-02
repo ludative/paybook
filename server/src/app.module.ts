@@ -4,14 +4,11 @@ import { AppService } from './app.service';
 import {RouterModule} from "nest-router";
 import {routes} from "./routes";
 import {ApiModule} from "./api/api.module";
-import { SequelizeModule } from '@nestjs/sequelize';
-import { ConfigModule } from '@nestjs/config';
-import dbConfig from "./db.config";
+import {DatabaseModule} from "./database/database.module";
 
 @Module({
   imports: [
-    ConfigModule.forRoot({isGlobal: true}),
-    SequelizeModule.forRoot(dbConfig()),
+    DatabaseModule,
     RouterModule.forRoutes(routes),
     ApiModule
   ],
