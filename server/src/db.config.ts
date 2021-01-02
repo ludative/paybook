@@ -9,7 +9,7 @@ const dbConfig = (): SequelizeModuleOptions => {
         username: 'root',
         password: 'root',
         database: 'test',
-        timezone: 'Asia/Seoul',
+        timezone: '.envAsia/Seoul',
         define: {
             timestamps: false
         },

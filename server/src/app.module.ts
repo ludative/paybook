@@ -10,7 +10,7 @@ import dbConfig from "./db.config";
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({isGlobal: true}),
     SequelizeModule.forRoot(dbConfig()),
     RouterModule.forRoutes(routes),
     ApiModule
