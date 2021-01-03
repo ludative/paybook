@@ -1,7 +1,7 @@
 import {Column, DataType, Model, Table} from 'sequelize-typescript';
 
 @Table
-export default class UserModel extends Model<UserModel> {
+export default class User extends Model<User> {
     @Column({
         type: DataType.STRING,
         allowNull: false,
@@ -18,5 +18,5 @@ export default class UserModel extends Model<UserModel> {
         type: DataType.STRING,
         allowNull: false,
     })
-    name: string;
+    nickname: string;
 }
