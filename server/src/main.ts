@@ -10,7 +10,7 @@ import {HttpExceptionFilter} from "./filters/http-exception.filter";
 const setSwaggerModule = (app: NestExpressApplication): void => {
   const options = new DocumentBuilder()
       .setTitle('가계부 API')
-      .setDescription('가계부 API 명세서 입니다. 끼룩 🐥')
+      .setDescription('가계부 API 명세서 입니다. 끼룩 🐥<br/>Users API 를 제외하고는 sign-in API 를 먼저 호출해야 다른 API 를 사용가능합니다.<br/>모든 API 에서 token 인증을 수행합니다.')
       .setVersion('1.0')
       .build();
   const document = SwaggerModule.createDocument(app, options);

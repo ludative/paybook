@@ -1,0 +1,68 @@
+import {
+    ForbiddenException,
+    Inject,
+    Injectable,
+    InternalServerErrorException,
+    NestMiddleware, UnauthorizedException
+} from "@nestjs/common";
+import {CookieNames} from "../enum/auth";
+import {verifyToken} from "../utils/jwt";
+import {IUser} from "../interface/user";
+import {SequelizeProvide} from "../enum/sequelizeProvide";
+import {UserService} from "../api/user/user.service";
+
+@Injectable()
+export class AuthenticationMiddleware implements NestMiddleware {
+    constructor(
+        private readonly userService: UserService
+    ) {
+    }
+    async use(req, res, next: () => void) {
+        try {
+            const token: string = req?.cookies?.[CookieNames.ACCESS_TOKEN];
+            if (!token) throw new UnauthorizedException();
+            else {
+                const tokenUser: IUser = verifyToken(token);
+                const user = await this.userService.findUserByPk(tokenUser.id);
+                if (!user) throw new UnauthorizedException();
+                next();
+            }
+        } catch (e) {
+            res.clearCookie(CookieNames.ACCESS_TOKEN);
+
+            if (getIsInValidStatus(e.status)) res.redirect('/login');
+            else throw new InternalServerErrorException(e.message || "INTERVAL_SERVER_ERROR");
+        }
+    }
+}
+
+@Injectable()
+export class AuthenticationAdminMiddleware implements NestMiddleware {
+    constructor(
+        @Inject(SequelizeProvide.USER) private readonly userService: UserService
+    ) {
+    }
+    async use(req, res, next: () => void) {
+        try {
+            const token: string = req?.cookies?.[CookieNames.ACCESS_TOKEN];
+            if (!token) throw new UnauthorizedException();
+            else {
+                const tokenUser: IUser = verifyToken(token);
+                const user = await this.userService.findUserByPk(tokenUser.id);
+                if (!user) throw new UnauthorizedException();
+                else if (!user.isAdmin) throw new ForbiddenException();
+                next();
+            }
+        } catch (e) {
+            res.clearCookie(CookieNames.ACCESS_TOKEN);
+
+            if (getIsInValidStatus(e.status)) res.redirect('/login');
+            else throw new InternalServerErrorException(e.message || "INTERVAL_SERVER_ERROR");
+        }
+    }
+}
+
+export const getIsInValidStatus = (status: number): boolean => {
+    const inValidStatus: Set<number> = new Set<number>([401, 403, 404]);
+    return inValidStatus.has(status);
+};
