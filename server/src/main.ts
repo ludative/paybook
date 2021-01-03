@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 import {NestExpressApplication} from "@nestjs/platform-express";
 import * as cookieParser from 'cookie-parser';
 import { urlencoded, json } from 'body-parser';
+import {ValidationPipe} from "@nestjs/common";
 
 const setSwaggerModule = (app: NestExpressApplication): void => {
   const options = new DocumentBuilder()
@@ -17,11 +18,12 @@ const setSwaggerModule = (app: NestExpressApplication): void => {
 
 async function bootstrap() {
   const app: NestExpressApplication = await NestFactory.create<NestExpressApplication>(AppModule, {cors: true});
-  const PORT: number = 5000;
+  const PORT = 5000;
 
   app.use(cookieParser());
   app.use(urlencoded({ extended: true }));
   app.use(json());
+  app.useGlobalPipes(new ValidationPipe());
 
   setSwaggerModule(app);
 
