@@ -1,5 +1,6 @@
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import Code from '../../database/models/code.model';
 
 enum CodeType {
   TYPE = 'TYPE',
@@ -27,7 +28,7 @@ export class CreateCodeDto {
   readonly type: CodeType;
 }
 
-class Code extends CreateCodeDto {
+class CodeResponse extends Code {
   @ApiProperty({ default: 1 })
   id: number;
 
@@ -37,10 +38,10 @@ class Code extends CreateCodeDto {
   @ApiProperty({ default: '' })
   updatedAt: string;
 }
-export class GetCodes {
+export class GetCodesResponse {
   @ApiProperty({ isArray: true })
-  types: Code;
+  types: CodeResponse;
 
   @ApiProperty({ isArray: true })
-  payments: Code;
+  payments: CodeResponse;
 }

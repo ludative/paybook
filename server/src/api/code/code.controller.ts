@@ -11,7 +11,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateCodeDto, GetCodes } from './code.dto';
+import { CreateCodeDto, GetCodesResponse } from './code.dto';
 import { IGetCodesResponse } from '../../interface/code';
 
 @ApiTags('Codes')
@@ -25,7 +25,7 @@ export class CodeController {
     operationId: 'getCodes',
     summary: '생성된 지출 카테고리를 가져오는 API',
   })
-  @ApiOkResponse({ type: GetCodes })
+  @ApiOkResponse({ type: GetCodesResponse })
   @ApiResponse({
     status: 201,
     description: 'The record has been successfully created.',
