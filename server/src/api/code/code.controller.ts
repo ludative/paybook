@@ -2,14 +2,12 @@ import {
   Body,
   Controller,
   Get,
-  Param,
-  ParseIntPipe,
   Post,
 } from '@nestjs/common';
 import { CodeService } from './code.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { ApiImplicitParam } from '@nestjs/swagger/dist/decorators/api-implicit-param.decorator';
 import { CreateCodeDto } from './code.dto';
+import { IGetCodesResponse } from '../../interface/code';
 
 @Controller()
 export class CodeController {
@@ -17,9 +15,9 @@ export class CodeController {
   }
 
   @ApiOperation({
-    description: 'Disable Company',
+    description: '생성된 지출 카테고리를 가져오는 API',
     operationId: 'getCodes',
-    summary: 'summary goes here',
+    summary: '생성된 지출 카테고리를 가져오는 API',
   })
   @ApiResponse({
     status: 201,
@@ -27,26 +25,8 @@ export class CodeController {
   })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   @Get()
-  getCodes(): string {
+  async getCodes(): Promise<IGetCodesResponse> {
     return this.codeService.getCodes();
-  }
-
-  @ApiOperation({
-    description: 'Disable Company',
-    operationId: 'getCode',
-    summary: 'summary goes here',
-  })
-  @ApiImplicitParam({ name: 'id', type: Number })
-  @ApiResponse({
-    status: 201,
-    description: 'The record has been successfully created.',
-  })
-  @ApiResponse({ status: 403, description: 'Forbidden.' })
-  @Get(':id')
-  getCode(@Param('id', ParseIntPipe) id: number) {
-    return {
-      id,
-    };
   }
 
   @ApiOperation({
@@ -61,6 +41,6 @@ export class CodeController {
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   @Post('/types')
   async createType(@Body() body: CreateCodeDto): Promise<void> {
-    return this.codeService.createCode(body)
+    return this.codeService.createCode(body);
   }
 }
