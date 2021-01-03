@@ -5,6 +5,7 @@ import {NestExpressApplication} from "@nestjs/platform-express";
 import * as cookieParser from 'cookie-parser';
 import { urlencoded, json } from 'body-parser';
 import {ValidationPipe} from "@nestjs/common";
+import {HttpExceptionFilter} from "./filters/http-exception.filter";
 
 const setSwaggerModule = (app: NestExpressApplication): void => {
   const options = new DocumentBuilder()
@@ -24,6 +25,7 @@ async function bootstrap() {
   app.use(urlencoded({ extended: true }));
   app.use(json());
   app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   setSwaggerModule(app);
 
