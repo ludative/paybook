@@ -1,13 +1,24 @@
 import {Body, Controller, Post} from '@nestjs/common';
 import {UserService} from "./user.service";
-import {UserSignUpDto} from "./user.dto";
+import {UserCheckValidUserName, UserSignUpDto, UserValidUserNameDto} from "./user.dto";
+import {IUserCheckValidUserNameResponse} from "../../interface/user";
+import {ApiOkResponse, ApiTags} from "@nestjs/swagger";
 
+@ApiTags('Users')
 @Controller()
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
+    @Post('/check-username')
+    @ApiOkResponse({type: UserCheckValidUserName})
+    async checkValidUserName(
+        @Body() body: UserValidUserNameDto
+    ): Promise<IUserCheckValidUserNameResponse> {
+        return this.userService.checkValidUserName(body.username)
+    }
+
     @Post('/sign-up')
-    signUp(@Body() body: UserSignUpDto): void {
+    async signUp(@Body() body: UserSignUpDto): Promise<void> {
         /**
          * {
          *     username: "dajyu",
@@ -15,6 +26,6 @@ export class UserController {
          *     nickname: "다쥬"
          * }
          */
-        return this.userService.signUp(body);
+        return await this.userService.signUp(body);
     }
 }
