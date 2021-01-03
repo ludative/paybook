@@ -5,10 +5,11 @@ import {
   Post,
 } from '@nestjs/common';
 import { CodeService } from './code.service';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateCodeDto } from './code.dto';
 import { IGetCodesResponse } from '../../interface/code';
 
+@ApiTags('Codes')
 @Controller()
 export class CodeController {
   constructor(private readonly codeService: CodeService) {
@@ -39,7 +40,7 @@ export class CodeController {
     description: 'The record has been successfully created.',
   })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
-  @Post('/types')
+  @Post()
   async createType(@Body() body: CreateCodeDto): Promise<void> {
     return this.codeService.createCode(body);
   }
