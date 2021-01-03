@@ -26,3 +26,21 @@ export class CreateCodeDto {
   @ApiProperty({ enum: ['TYPE', 'PAYMENT'], default: CodeType.TYPE })
   readonly type: CodeType;
 }
+
+class Code extends CreateCodeDto {
+  @ApiProperty()
+  id: number;
+
+  @ApiProperty()
+  createdAt: string;
+
+  @ApiProperty()
+  updatedAt: string;
+}
+export class GetCodes {
+  @ApiProperty({ isArray: true })
+  types: Code;
+
+  @ApiProperty({ isArray: true })
+  payments: Code;
+}
