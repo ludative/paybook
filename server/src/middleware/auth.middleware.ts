@@ -25,6 +25,7 @@ export class AuthenticationMiddleware implements NestMiddleware {
                 const tokenUser: IUser = verifyToken(token);
                 const user = await this.userService.findUserByPk(tokenUser.id);
                 if (!user) throw new UnauthorizedException();
+                req.user = user;
                 next();
             }
         } catch (e) {
@@ -51,6 +52,7 @@ export class AuthenticationAdminMiddleware implements NestMiddleware {
                 const user = await this.userService.findUserByPk(tokenUser.id);
                 if (!user) throw new UnauthorizedException();
                 else if (!user.isAdmin) throw new ForbiddenException();
+                req.user = user;
                 next();
             }
         } catch (e) {

@@ -62,6 +62,10 @@ export class UserService {
     }
 
     async findUserByPk(id: number): Promise<User> {
-        return this.userModel.findByPk(id);
+        return this.userModel.findByPk(id, {
+            attributes: {
+                exclude: ['password']
+            }
+        });
     }
 }
