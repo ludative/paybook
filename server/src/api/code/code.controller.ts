@@ -1,8 +1,8 @@
 import {
   Body,
   Controller,
-  Get,
-  Post,
+  Get, Param, ParseIntPipe,
+  Post, Put,
 } from '@nestjs/common';
 import { CodeService } from './code.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -32,7 +32,7 @@ export class CodeController {
 
   @ApiOperation({
     description: '지출 카테고리를 생성하는 API',
-    operationId: 'createType',
+    operationId: 'createCode',
     summary: '지출 카테고리를 생성하는 API',
   })
   @ApiResponse({
@@ -41,7 +41,22 @@ export class CodeController {
   })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   @Post()
-  async createType(@Body() body: CreateCodeDto): Promise<void> {
+  async createCode(@Body() body: CreateCodeDto): Promise<void> {
     return this.codeService.createCode(body);
+  }
+
+  @ApiOperation({
+    description: '지출 종류/방법 카테고리 수정 API',
+    operationId: 'updateCode',
+    summary: '지출 종류/방법 카테고리 수정 API',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'The record has been successfully created.',
+  })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @Put(':id')
+  async updateCode(@Param('id', ParseIntPipe) id: number, @Body() body: CreateCodeDto): Promise<void> {
+    return this.codeService.updateCode(id, body);
   }
 }

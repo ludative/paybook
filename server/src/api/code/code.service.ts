@@ -32,4 +32,12 @@ export class CodeService {
   async createCode(body: CreateCodeDto): Promise<void> {
     this.codeModel.create(body)
   }
+
+  async updateCode(id: number, body: CreateCodeDto): Promise<void> {
+    this.codeModel.update(body, {
+      where: {
+        id
+      }
+    })
+  }
 }
