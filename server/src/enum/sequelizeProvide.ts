@@ -1,3 +1,4 @@
 export enum SequelizeProvide {
-    USER="USER"
+  USER = 'USER',
+  CODE = 'CODE'
 }
