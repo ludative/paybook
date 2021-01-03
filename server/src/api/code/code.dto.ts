@@ -9,12 +9,12 @@ enum CodeType {
 export class CreateCodeDto {
   @IsNotEmpty({ message: '코드 값을 입력해주세요.' })
   @IsString()
-  @ApiProperty({ default: 'HEALTH' })
+  @ApiProperty({ default: '' })
   readonly code: string;
 
   @IsNotEmpty({ message: '이름을 입력해주세요.' })
   @IsString()
-  @ApiProperty({ default: '운동' })
+  @ApiProperty({ default: '' })
   readonly name: string;
 
   @IsString()
@@ -23,18 +23,18 @@ export class CreateCodeDto {
 
   @IsNotEmpty()
   @IsEnum(CodeType)
-  @ApiProperty({ enum: ['TYPE', 'PAYMENT'], default: CodeType.TYPE })
+  @ApiProperty({ enum: ['TYPE', 'PAYMENT'], default: '' })
   readonly type: CodeType;
 }
 
 class Code extends CreateCodeDto {
-  @ApiProperty()
+  @ApiProperty({ default: 1 })
   id: number;
 
-  @ApiProperty()
+  @ApiProperty({ default: '' })
   createdAt: string;
 
-  @ApiProperty()
+  @ApiProperty({ default: '' })
   updatedAt: string;
 }
 export class GetCodes {
