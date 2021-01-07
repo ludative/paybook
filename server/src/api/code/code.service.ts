@@ -3,6 +3,7 @@ import { SequelizeProvide } from '../../enum/sequelizeProvide';
 import Code from '../../database/models/code.model';
 import { CreateCodeDto } from './code.dto';
 import { ICode, IGetCodesResponse } from '../../interface/code';
+import {CodeType} from "../../enum/code";
 
 @Injectable()
 export class CodeService {
@@ -14,12 +15,12 @@ export class CodeService {
   async getCodes(): Promise<IGetCodesResponse> {
     const types: ICode[] = await this.codeModel.findAll({
       where: {
-        type: 'TYPE'
+        type: CodeType.TYPE
       }
     })
     const payments: ICode[] = await this.codeModel.findAll({
       where: {
-        type: 'PAYMENT'
+        type: CodeType.PAYMENT
       }
     })
 

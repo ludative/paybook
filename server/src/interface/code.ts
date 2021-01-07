@@ -1,3 +1,5 @@
+import {CodeType} from "../enum/code";
+
 export interface ICode {
   id?: number
   code: string
@@ -5,7 +7,7 @@ export interface ICode {
   updatedAt?: string
   name: string
   icon: string
-  type: 'TYPE' | 'PAYMENT'
+  type: CodeType
 }
 
 export interface IGetCodesResponse {

@@ -1,11 +1,7 @@
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import Code from '../../database/models/code.model';
-
-enum CodeType {
-  TYPE = 'TYPE',
-  PAYMENT = 'PAYMENT'
-}
+import {CodeType} from "../../enum/code";
 
 export class CreateCodeDto {
   @IsNotEmpty({ message: '코드 값을 입력해주세요.' })
@@ -24,7 +20,7 @@ export class CreateCodeDto {
 
   @IsNotEmpty()
   @IsEnum(CodeType)
-  @ApiProperty({ enum: ['TYPE', 'PAYMENT'], default: '' })
+  @ApiProperty({ enum: CodeType, default: '' })
   readonly type: CodeType;
 }
 
