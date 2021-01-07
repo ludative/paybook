@@ -1,10 +1,10 @@
 {
-  "name": "server",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
-  "private": true,
-  "license": "UNLICENSED",
+  "name": "paybook-server",
+  "version": "1.0.0",
+  "description": "paybook API Server",
+  "author": "ludative",
+  "private": false,
+  "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",

@@ -1,0 +1,12 @@
+{
+  "name": "paybook",
+  "version": "1.0.0",
+  "description": "paybook Application",
+  "scripts": {
+    "start": "sh ./shell/start-all.sh",
+    "start:server": "sh ./shell/start-server.sh",
+    "start:client": "sh ./shell/start-client.sh"
+  },
+  "author": "ludative",
+  "license": "MIT"
+}
