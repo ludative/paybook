@@ -1,7 +1,9 @@
 import {Column, DataType, Model, Table} from 'sequelize-typescript';
+import {ApiProperty} from "@nestjs/swagger";
 
 @Table
 export default class User extends Model<User> {
+    @ApiProperty({ default: "" })
     @Column({
         type: DataType.STRING,
         allowNull: false,
@@ -14,9 +16,17 @@ export default class User extends Model<User> {
     })
     password: string;
 
+    @ApiProperty({ default: "" })
     @Column({
         type: DataType.STRING,
         allowNull: false,
     })
     nickname: string;
+
+    @ApiProperty({default: false})
+    @Column({
+        type: DataType.BOOLEAN,
+        defaultValue: false
+    })
+    isAdmin: boolean;
 }

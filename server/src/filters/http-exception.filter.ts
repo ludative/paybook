@@ -15,7 +15,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
             .status(status)
             .json({
                 statusCode: status,
-                timestamp: new Date().toISOString(),
+                timestamp: new Date().valueOf(),
                 path: request.url,
                 message: errorMessage ?? exception?.message ?? "INTERVAL_SERVER_ERROR"
             });
