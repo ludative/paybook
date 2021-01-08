@@ -4,8 +4,7 @@
   "description": "paybook Application",
   "scripts": {
     "start": "sh ./shell/start-all.sh",
-    "start:server": "sh ./shell/start-server.sh",
-    "start:client": "sh ./shell/start-client.sh"
+    "end:all": "sh ./shell/end-all.sh"
   },
   "author": "ludative",
   "license": "MIT"
