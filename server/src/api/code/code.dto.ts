@@ -24,7 +24,7 @@ export class CreateCodeDto {
   readonly type: CodeType;
 }
 
-class CodeResponse extends Code {
+export class CodeResponse extends Code {
   @ApiProperty({ default: 1 })
   id: number;
 
