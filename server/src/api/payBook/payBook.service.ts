@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import PayBook from '../../database/models/payBook.model';
 import { SequelizeProvide } from '../../enum/sequelizeProvide';
 import { CreatePayBookDto } from './payBook.dto';
@@ -31,5 +31,13 @@ export class PayBookService {
       userId,
       payBookId: payBook.id,
     });
+  }
+
+  async getPayBook(id: number): Promise<PayBook> {
+    const payBook: PayBook = await this.payBookModel.findByPk(id);
+    if (!payBook) {
+      throw new BadRequestException("존재하지 않는 가계부입니다.")
+    }
+    return payBook;
   }
 }

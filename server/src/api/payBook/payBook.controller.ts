@@ -1,9 +1,23 @@
-import { Body, Controller, Get, Post, Request } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Request,
+} from '@nestjs/common';
 import { PayBookService } from './payBook.service';
 import PayBook from '../../database/models/payBook.model';
-import { ApiOkResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiOkResponse,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CreatePayBookDto } from './payBook.dto';
 
+@ApiTags('PayBooks')
 @Controller()
 export class PayBookController {
   constructor(private readonly payBookService: PayBookService) {
@@ -38,5 +52,21 @@ export class PayBookController {
   @Post()
   async createPayBook(@Request() req, @Body() body: CreatePayBookDto): Promise<void> {
     return await this.payBookService.createPayBook(req.user.id, body);
+  }
+
+  @ApiOperation({
+    description: '가계부 하나 가져오는 API',
+    operationId: 'getPayBook',
+    summary: '가계부 하나 가져오는 API',
+  })
+  @ApiOkResponse({ type: PayBook })
+  @ApiResponse({
+    status: 201,
+    description: 'The record has been successfully created.',
+  })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @Get(':id')
+  async getPayBook(@Param('id', ParseIntPipe) id: number): Promise<PayBook> {
+    return await this.payBookService.getPayBook(id)
   }
 }
