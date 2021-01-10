@@ -40,4 +40,12 @@ export class PayBookService {
     }
     return payBook;
   }
+
+  async updatePayBook(id: number, body: CreatePayBookDto): Promise<void> {
+    await this.payBookModel.update(body, {
+      where: {
+        id
+      }
+    })
+  }
 }

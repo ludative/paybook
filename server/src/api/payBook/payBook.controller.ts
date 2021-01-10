@@ -4,7 +4,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
-  Post,
+  Post, Put,
   Request,
 } from '@nestjs/common';
 import { PayBookService } from './payBook.service';
@@ -67,6 +67,21 @@ export class PayBookController {
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   @Get(':id')
   async getPayBook(@Param('id', ParseIntPipe) id: number): Promise<PayBook> {
-    return await this.payBookService.getPayBook(id)
+    return await this.payBookService.getPayBook(id);
+  }
+
+  @ApiOperation({
+    description: '가계부 수정 API',
+    operationId: 'updatePayBook',
+    summary: '가계부 수정 API',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'The record has been successfully created.',
+  })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @Put(':id')
+  async updatePayBook(@Param('id', ParseIntPipe) id: number, @Body() body: CreatePayBookDto): Promise<void> {
+    return await this.payBookService.updatePayBook(id, body);
   }
 }
