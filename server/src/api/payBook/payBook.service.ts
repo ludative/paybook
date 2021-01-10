@@ -3,12 +3,14 @@ import PayBook from '../../database/models/payBook.model';
 import { SequelizeProvide } from '../../enum/sequelizeProvide';
 import { CreatePayBookByInviteCodeDto, CreatePayBookDto } from './payBook.dto';
 import UserPayBook from '../../database/models/userPayBook.model';
+import History from "../../database/models/history.model";
 
 @Injectable()
 export class PayBookService {
   constructor(
     @Inject(SequelizeProvide.PAY_BOOK) private readonly payBookModel: typeof PayBook,
-    @Inject(SequelizeProvide.USER_PAY_BOOK) private readonly  userPayBookModel: typeof UserPayBook,
+    @Inject(SequelizeProvide.USER_PAY_BOOK) private readonly userPayBookModel: typeof UserPayBook,
+    @Inject(SequelizeProvide.HISTORY) private readonly historyModel: typeof History,
   ) {
   }
 
@@ -43,6 +45,19 @@ export class PayBookService {
     return payBook;
   }
 
+  async getUserPayBook(payBookId: number, userId: number): Promise<UserPayBook> {
+    const userPayBook: UserPayBook = await this.userPayBookModel.findOne({
+      where: {
+        payBookId,
+        userId
+      }
+    });
+    if (!userPayBook) {
+      throw new BadRequestException('접근할 수 없는 가계부입니다.');
+    }
+    return userPayBook;
+  }
+
   async updatePayBook(id: number, body: CreatePayBookDto): Promise<void> {
     await this.payBookModel.update(body, {
       where: {
@@ -62,6 +77,11 @@ export class PayBookService {
         payBookId: id,
       },
     });
+    await this.historyModel.destroy({
+      where: {
+        payBookId: id
+      }
+    })
   }
 
   async createPayBookByInviteCode(userId: number, body: CreatePayBookByInviteCodeDto): Promise<void> {
