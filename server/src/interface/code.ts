@@ -1,16 +1,6 @@
-import {CodeType} from "../enum/code";
-
-export interface ICode {
-  id?: number
-  code: string
-  createdAt?: string
-  updatedAt?: string
-  name: string
-  icon: string
-  type: CodeType
-}
+import Code from '../database/models/code.model';
 
 export interface IGetCodesResponse {
-  types: ICode[]
-  payments: ICode[]
+  types: Code[]
+  payments: Code[]
 }

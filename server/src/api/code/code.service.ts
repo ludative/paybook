@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { SequelizeProvide } from '../../enum/sequelizeProvide';
 import Code from '../../database/models/code.model';
 import { CreateCodeDto } from './code.dto';
-import { ICode, IGetCodesResponse } from '../../interface/code';
+import { IGetCodesResponse } from '../../interface/code';
 import {CodeType} from "../../enum/code";
 
 @Injectable()
@@ -13,12 +13,12 @@ export class CodeService {
   }
 
   async getCodes(): Promise<IGetCodesResponse> {
-    const types: ICode[] = await this.codeModel.findAll({
+    const types: Code[] = await this.codeModel.findAll({
       where: {
         type: CodeType.TYPE
       }
     })
-    const payments: ICode[] = await this.codeModel.findAll({
+    const payments: Code[] = await this.codeModel.findAll({
       where: {
         type: CodeType.PAYMENT
       }
@@ -31,11 +31,11 @@ export class CodeService {
   }
 
   async createCode(body: CreateCodeDto): Promise<void> {
-    this.codeModel.create(body)
+    await this.codeModel.create(body)
   }
 
   async updateCode(id: number, body: CreateCodeDto): Promise<void> {
-    this.codeModel.update(body, {
+    await this.codeModel.update(body, {
       where: {
         id
       }

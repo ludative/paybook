@@ -3,9 +3,9 @@ export interface IUserCheckValidUserNameResponse {
 }
 
 export interface IUser {
-    id?: number;
-    createdAt?: string;
-    updatedAt?: string;
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
     username: string;
     nickname: string;
     isAdmin: boolean;
