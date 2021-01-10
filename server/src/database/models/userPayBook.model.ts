@@ -1,4 +1,6 @@
 import {
+  BelongsTo,
+  BelongsToMany,
   Column,
   DataType,
   ForeignKey,
@@ -25,29 +27,37 @@ export default class UserPayBook extends Model<UserPayBook> {
   @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false
+    allowNull: false,
   })
   userId: number;
+
+  @ApiProperty({ type: User })
+  @BelongsTo(() => User, 'userId')
+  user: User;
 
   @ApiProperty()
   @ForeignKey(() => PayBook)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false
+    allowNull: false,
   })
   payBookId: number;
+
+  @ApiProperty({ type: PayBook })
+  @BelongsTo(() => PayBook, 'payBookId')
+  payBook: PayBook;
 
   @Column({
     type: DataType.DATE,
     allowNull: false,
-    defaultValue: DataType.NOW
+    defaultValue: DataType.NOW,
   })
   createdAt: Date;
 
   @Column({
     type: DataType.DATE,
     allowNull: false,
-    defaultValue: DataType.NOW
+    defaultValue: DataType.NOW,
   })
   updatedAt: Date;
 }

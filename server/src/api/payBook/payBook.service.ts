@@ -1,8 +1,35 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import PayBook from '../../database/models/payBook.model';
+import { SequelizeProvide } from '../../enum/sequelizeProvide';
+import { CreatePayBookDto } from './payBook.dto';
+import UserPayBook from '../../database/models/userPayBook.model';
 
 @Injectable()
 export class PayBookService {
-    getPayBooks(): string {
-        return 'Hello PayBooks!';
-    }
+  constructor(
+    @Inject(SequelizeProvide.PAY_BOOK) private readonly payBookModel: typeof PayBook,
+    @Inject(SequelizeProvide.USER_PAY_BOOK) private readonly  userPayBookModel: typeof UserPayBook,
+  ) {
+  }
+
+  async getPayBooks(userId: number): Promise<PayBook[]> {
+    const userPayBooks: UserPayBook[] = await this.userPayBookModel.findAll({
+      where: {
+        userId,
+      },
+      include: [{
+        model: PayBook,
+        foreignKey: 'payBookId',
+      }],
+    });
+    return userPayBooks.map(userPayBook => userPayBook.payBook);
+  }
+
+  async createPayBook(userId: number, body: CreatePayBookDto): Promise<void> {
+    const payBook: PayBook = await this.payBookModel.create(body);
+    await this.userPayBookModel.create({
+      userId,
+      payBookId: payBook.id,
+    });
+  }
 }
