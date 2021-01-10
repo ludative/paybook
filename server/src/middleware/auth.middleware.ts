@@ -1,6 +1,5 @@
 import {
     ForbiddenException,
-    Inject,
     Injectable,
     InternalServerErrorException,
     NestMiddleware, UnauthorizedException
@@ -8,7 +7,6 @@ import {
 import {CookieNames} from "../enum/auth";
 import {verifyToken} from "../utils/jwt";
 import {IUser} from "../interface/user";
-import {SequelizeProvide} from "../enum/sequelizeProvide";
 import {UserService} from "../api/user/user.service";
 
 @Injectable()
@@ -40,7 +38,7 @@ export class AuthenticationMiddleware implements NestMiddleware {
 @Injectable()
 export class AuthenticationAdminMiddleware implements NestMiddleware {
     constructor(
-        @Inject(SequelizeProvide.USER) private readonly userService: UserService
+        private readonly userService: UserService
     ) {
     }
     async use(req, res, next: () => void) {

@@ -13,10 +13,11 @@ export class HistoryService {
         @Inject(SequelizeProvide.CODE) private readonly codeModel: typeof Code,
     ) {
     }
-    async getDailyHistories(date: string): Promise<History[]> {
+    async getDailyHistories(date: string, payBookId: number): Promise<History[]> {
         return this.historyModel.findAll({
             where: {
-                date
+                date,
+                payBookId
             },
             include: [
                 {
@@ -54,10 +55,10 @@ export class HistoryService {
         });
     }
 
-    async createHistory(body: CreateHistoryDto): Promise<History> {
+    async createHistory(body: CreateHistoryDto, payBookId: number): Promise<History> {
         const {paymentCodeId, typeCodeId} = body;
         await this.checkHistoryCodeId(paymentCodeId, typeCodeId);
-        return this.historyModel.create(body);
+        return this.historyModel.create({...body, payBookId});
     }
 
     async getHistoryById(id:number): Promise<History> {

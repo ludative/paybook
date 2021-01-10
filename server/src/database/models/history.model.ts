@@ -2,7 +2,7 @@ import {Column, DataType, Model, Table, BelongsTo, ForeignKey} from 'sequelize-t
 import {ApiProperty} from "@nestjs/swagger";
 import {HistoryClassification} from "../../enum/history";
 import Code from "./code.model";
-import {CodeResponse} from "../../api/code/code.dto";
+import PayBook from "./payBook.model";
 
 @Table
 export default class History extends Model<History> {
@@ -50,7 +50,7 @@ export default class History extends Model<History> {
     })
     typeCodeId: number;
 
-    @ApiProperty({type: () => CodeResponse})
+    @ApiProperty({type: () => Code})
     @BelongsTo(() => Code, 'typeCodeId')
     typeCode: Code;
 
@@ -61,7 +61,7 @@ export default class History extends Model<History> {
     })
     paymentCodeId: number;
 
-    @ApiProperty({type: () => CodeResponse})
+    @ApiProperty({type: () => Code})
     @BelongsTo(() => Code, 'paymentCodeId')
     paymentCode: Code;
 
@@ -71,6 +71,13 @@ export default class History extends Model<History> {
         allowNull: false
     })
     date: string;
+
+    @ApiProperty()
+    @ForeignKey(() => PayBook)
+    @Column({
+        allowNull: false,
+    })
+    payBookId: number;
 
     @Column({
         type: DataType.DATE,
