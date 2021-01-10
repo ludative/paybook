@@ -85,6 +85,16 @@ export class PayBookController {
     return await this.payBookService.updatePayBook(id, body);
   }
 
+  @ApiOperation({
+    description: '가계부 삭제 API',
+    operationId: 'deletePayBook',
+    summary: '가계부 삭제 API',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'The record has been successfully created.',
+  })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
   @Delete(':id')
   async deletePayBook(@Param('id', ParseIntPipe) id: number) {
     return await this.payBookService.deletePayBook(id);
