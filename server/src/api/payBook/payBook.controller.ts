@@ -5,7 +5,7 @@ import {
   Param,
   ParseIntPipe,
   Post, Put,
-  Request,
+  Request, UseInterceptors,
 } from '@nestjs/common';
 import { PayBookService } from './payBook.service';
 import PayBook from '../../database/models/payBook.model';
@@ -16,6 +16,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CreatePayBookByInviteCodeDto, CreatePayBookDto } from './payBook.dto';
+import {TransactionInterceptor} from "../../interceptor/transactionInterceptor.interceptor";
 
 @ApiTags('PayBooks')
 @Controller()
@@ -50,6 +51,7 @@ export class PayBookController {
   })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   @Post()
+  @UseInterceptors(TransactionInterceptor)
   async createPayBook(@Request() req, @Body() body: CreatePayBookDto): Promise<void> {
     return await this.payBookService.createPayBook(req.user.id, body);
   }
@@ -96,7 +98,10 @@ export class PayBookController {
   })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   @Delete(':id')
-  async deletePayBook(@Param('id', ParseIntPipe) id: number) {
+  @UseInterceptors(TransactionInterceptor)
+  async deletePayBook(
+      @Param('id', ParseIntPipe,) id: number,
+  ) {
     return await this.payBookService.deletePayBook(id);
   }
 
