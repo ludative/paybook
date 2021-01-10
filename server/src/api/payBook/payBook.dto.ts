@@ -16,3 +16,10 @@ export class CreatePayBookDto {
   @ApiProperty({ default: '' })
   readonly inviteCode: string;
 }
+
+export class CreatePayBookByInviteCodeDto {
+  @IsNotEmpty({ message: '초대 코드를 입력해주세요.' })
+  @IsString()
+  @ApiProperty({ default: '' })
+  readonly inviteCode: string;
+}

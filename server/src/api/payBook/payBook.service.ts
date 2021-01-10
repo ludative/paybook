@@ -1,7 +1,7 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import PayBook from '../../database/models/payBook.model';
 import { SequelizeProvide } from '../../enum/sequelizeProvide';
-import { CreatePayBookDto } from './payBook.dto';
+import { CreatePayBookByInviteCodeDto, CreatePayBookDto } from './payBook.dto';
 import UserPayBook from '../../database/models/userPayBook.model';
 
 @Injectable()
@@ -19,8 +19,10 @@ export class PayBookService {
       },
       include: [{
         model: PayBook,
+        as: 'payBook',
         foreignKey: 'payBookId',
       }],
+      order: [[{ model: PayBook, as: 'payBook' }, 'name', 'ASC']],
     });
     return userPayBooks.map(userPayBook => userPayBook.payBook);
   }
@@ -36,7 +38,7 @@ export class PayBookService {
   async getPayBook(id: number): Promise<PayBook> {
     const payBook: PayBook = await this.payBookModel.findByPk(id);
     if (!payBook) {
-      throw new BadRequestException("존재하지 않는 가계부입니다.")
+      throw new BadRequestException('존재하지 않는 가계부입니다.');
     }
     return payBook;
   }
@@ -44,21 +46,47 @@ export class PayBookService {
   async updatePayBook(id: number, body: CreatePayBookDto): Promise<void> {
     await this.payBookModel.update(body, {
       where: {
-        id
-      }
-    })
+        id,
+      },
+    });
   }
 
   async deletePayBook(id: number): Promise<void> {
     await this.payBookModel.destroy({
       where: {
-        id
-      }
-    })
+        id,
+      },
+    });
     await this.userPayBookModel.destroy({
       where: {
-        payBookId: id
-      }
-    })
+        payBookId: id,
+      },
+    });
+  }
+
+  async createPayBookByInviteCode(userId: number, body: CreatePayBookByInviteCodeDto): Promise<void> {
+    const payBook: PayBook = await this.payBookModel.findOne({
+      where: {
+        inviteCode: body.inviteCode,
+      },
+    });
+    if (!payBook) {
+      throw new BadRequestException('잘못된 초대 코드 입니다.');
+    }
+
+    const userPayBook: UserPayBook = await this.userPayBookModel.findOne({
+      where: {
+        userId,
+        payBookId: payBook.id,
+      },
+    });
+    if (userPayBook) {
+      throw new BadRequestException('이미 초대가 완료된 가계부 입니다.');
+    }
+
+    await this.userPayBookModel.create({
+      userId,
+      payBookId: payBook.id,
+    });
   }
 }

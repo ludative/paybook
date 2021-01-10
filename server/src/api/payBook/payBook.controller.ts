@@ -15,7 +15,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreatePayBookDto } from './payBook.dto';
+import { CreatePayBookByInviteCodeDto, CreatePayBookDto } from './payBook.dto';
 
 @ApiTags('PayBooks')
 @Controller()
@@ -98,5 +98,20 @@ export class PayBookController {
   @Delete(':id')
   async deletePayBook(@Param('id', ParseIntPipe) id: number) {
     return await this.payBookService.deletePayBook(id);
+  }
+
+  @ApiOperation({
+    description: '초대된 가계부 들어가는 API',
+    operationId: 'createPayBookByInviteCode',
+    summary: '초대된 가계부 들어가는 API',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'The record has been successfully created.',
+  })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @Post('/invite')
+  async createPayBookByInviteCode(@Request() req, @Body() body: CreatePayBookByInviteCodeDto): Promise<void> {
+    return await this.payBookService.createPayBookByInviteCode(req.user.id, body)
   }
 }
