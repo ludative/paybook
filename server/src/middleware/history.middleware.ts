@@ -14,7 +14,7 @@ export class HistoryMiddleware implements NestMiddleware {
     }
     async use(req, res, next: () => void) {
         const payBookId: number = +req?.cookies?.[PAY_BOOK_ID];
-        const userId: number = req.user.id;
+        const userId: number = req?.user?.id;
 
         if (!payBookId) throw new BadRequestException("가계부를 선택해주세요.");
 
