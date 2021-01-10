@@ -1,5 +1,13 @@
-import {Column, DataType, Model, Table} from 'sequelize-typescript';
+import {
+    BelongsToMany,
+    Column,
+    DataType,
+    Model,
+    Table,
+} from 'sequelize-typescript';
 import {ApiProperty} from "@nestjs/swagger";
+import PayBook from './payBook.model';
+import UserPayBook from './userPayBook.model';
 
 @Table
 export default class User extends Model<User> {
@@ -39,6 +47,9 @@ export default class User extends Model<User> {
         defaultValue: false
     })
     isAdmin: boolean;
+
+    @BelongsToMany(() => PayBook, () => UserPayBook)
+    payBooks: PayBook[];
 
     @Column({
         type: DataType.DATE,
