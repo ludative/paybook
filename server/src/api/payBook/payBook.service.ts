@@ -48,4 +48,17 @@ export class PayBookService {
       }
     })
   }
+
+  async deletePayBook(id: number): Promise<void> {
+    await this.payBookModel.destroy({
+      where: {
+        id
+      }
+    })
+    await this.userPayBookModel.destroy({
+      where: {
+        payBookId: id
+      }
+    })
+  }
 }

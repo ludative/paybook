@@ -1,6 +1,6 @@
 import {
   Body,
-  Controller,
+  Controller, Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -83,5 +83,10 @@ export class PayBookController {
   @Put(':id')
   async updatePayBook(@Param('id', ParseIntPipe) id: number, @Body() body: CreatePayBookDto): Promise<void> {
     return await this.payBookService.updatePayBook(id, body);
+  }
+
+  @Delete(':id')
+  async deletePayBook(@Param('id', ParseIntPipe) id: number) {
+    return await this.payBookService.deletePayBook(id);
   }
 }
