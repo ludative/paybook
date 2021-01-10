@@ -13,6 +13,6 @@ export class HistoryModule implements NestModule {
     configure(consumer: MiddlewareConsumer): void {
         consumer
             .apply(HistoryMiddleware)
-            .forRoutes({path: "*", method: RequestMethod.ALL})
+            .forRoutes({path: "/api/histories/(.*)", method: RequestMethod.ALL})
     }
 }
