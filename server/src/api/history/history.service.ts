@@ -4,6 +4,7 @@ import {SequelizeProvide} from "../../enum/sequelizeProvide";
 import History from "../../database/models/history.model";
 import Code from "../../database/models/code.model";
 import {CodeType} from "../../enum/code";
+import {ICheckIsValidCodeIdArgs} from "../../interface/history";
 
 @Injectable()
 export class HistoryService {
@@ -32,19 +33,59 @@ export class HistoryService {
         });
     }
 
-    async checkIsValidCodeId(id: number, type: CodeType): Promise<boolean> {
+    async checkIsValidCodeId({id, type, errorMessage}:ICheckIsValidCodeIdArgs): Promise<void> {
         const code:Code = await this.codeModel.findByPk(id);
-        return !!code && code.type === type;
+        const isValidCode: boolean = !!code && code.type === type;
+        if (!isValidCode) {
+            throw new BadRequestException(errorMessage);
+        }
     }
 
-    async createHistory(body: CreateHistoryDto): Promise<any> {
+    async checkHistoryCodeId(paymentCodeId: number, typeCodeId: number): Promise<void> {
+        await this.checkIsValidCodeId({
+            id: paymentCodeId,
+            type: CodeType.PAYMENT,
+            errorMessage: "잘못된 지출 코드 입니다."
+        });
+        await this.checkIsValidCodeId({
+            id: typeCodeId,
+            type: CodeType.TYPE,
+            errorMessage: "잘못된 유형 코드 입니다."
+        });
+    }
+
+    async createHistory(body: CreateHistoryDto): Promise<History> {
         const {paymentCodeId, typeCodeId} = body;
-        const isValuePaymentCode: boolean = await this.checkIsValidCodeId(paymentCodeId, CodeType.PAYMENT);
-        if (!isValuePaymentCode) throw new BadRequestException("잘못된 지출 코드 입니다.");
-
-       const isValidTypeCode: boolean = await this.checkIsValidCodeId(typeCodeId, CodeType.TYPE);
-        if (!isValidTypeCode) throw new BadRequestException("잘못된 유형 코드 입니다.");
-
+        await this.checkHistoryCodeId(paymentCodeId, typeCodeId);
         return this.historyModel.create(body);
+    }
+
+    async getHistoryById(id:number): Promise<History> {
+        const history: History = await this.historyModel.findByPk(id);
+        if (!history) {
+            throw new BadRequestException("존재하지 않는 내역입니다.")
+        } else {
+            return history
+        }
+    }
+
+    async updateHistoryById(id: number, body: CreateHistoryDto): Promise<void> {
+        await this.getHistoryById(id);
+        const {paymentCodeId, typeCodeId} = body;
+        await this.checkHistoryCodeId(paymentCodeId, typeCodeId);
+        await this.historyModel.update(body, {
+            where: {
+                id
+            }
+        });
+    }
+
+    async deleteHistoryById(id: number): Promise<void> {
+        await this.getHistoryById(id);
+        await this.historyModel.destroy({
+            where: {
+                id
+            }
+        })
     }
 }

@@ -47,3 +47,16 @@ export class CreateHistoryDto {
   @IsNotEmpty({message: "날짜를 선택해주세요."})
   readonly date: string;
 }
+
+export class DeleteHistoryByIdDto {
+  @IsNumber()
+  @IsNotEmpty()
+  @IsPositive()
+  @ApiProperty()
+  readonly id: number;
+
+  @ApiProperty({default: "2021-01-08"})
+  @IsISO8601()
+  @IsNotEmpty({message: "날짜를 선택해주세요."})
+  readonly date: string;
+}

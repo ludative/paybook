@@ -65,7 +65,7 @@ export default class History extends Model<History> {
     @BelongsTo(() => Code, 'paymentCodeId')
     paymentCode: Code;
 
-    @ApiProperty({default: "2021-01-88"})
+    @ApiProperty({default: "2021-01-08"})
     @Column({
         type: DataType.DATEONLY,
         allowNull: false
