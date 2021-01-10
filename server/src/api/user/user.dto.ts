@@ -47,22 +47,11 @@ export class UserCheckValidUserName implements IUserCheckValidUserNameResponse {
     readonly isValidUserName: boolean = true;
 }
 
-export class UserResponse extends User {
-    @ApiProperty({ default: 1 })
-    readonly id: number;
-
-    @ApiProperty({ default: "" })
-    readonly createdAt: string;
-
-    @ApiProperty({ default: "" })
-    readonly updatedAt: string;
-}
-
 export class UserSignInResponse {
     @ApiProperty({default: ""})
     readonly accessToken: string = "";
 
     @ApiProperty()
-    readonly user: UserResponse;
+    readonly user: User;
 }
 

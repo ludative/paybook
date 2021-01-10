@@ -24,20 +24,10 @@ export class CreateCodeDto {
   readonly type: CodeType;
 }
 
-export class CodeResponse extends Code {
-  @ApiProperty({ default: 1 })
-  id: number;
-
-  @ApiProperty({ default: '' })
-  createdAt: string;
-
-  @ApiProperty({ default: '' })
-  updatedAt: string;
-}
 export class GetCodesResponse {
   @ApiProperty({ isArray: true })
-  types: CodeResponse;
+  types: Code;
 
   @ApiProperty({ isArray: true })
-  payments: CodeResponse;
+  payments: Code;
 }

@@ -6,6 +6,16 @@ import {CodeType} from "../../enum/code";
 export default class Code extends Model<Code> {
   @ApiProperty()
   @Column({
+    type: DataType.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    unique: true,
+    primaryKey: true,
+  })
+  id: number;
+
+  @ApiProperty()
+  @Column({
     type: DataType.STRING,
     allowNull: false,
   })
@@ -29,4 +39,18 @@ export default class Code extends Model<Code> {
     type: DataType.ENUM(CodeType.TYPE, CodeType.PAYMENT),
   })
   type: CodeType;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+    defaultValue: DataType.NOW
+  })
+  createdAt: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+    defaultValue: DataType.NOW
+  })
+  updatedAt: Date;
 }
