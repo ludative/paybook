@@ -16,5 +16,4 @@ export const payBooksProviders = [
     provide: SequelizeProvide.HISTORY,
     useValue: History,
   }
-
 ];
