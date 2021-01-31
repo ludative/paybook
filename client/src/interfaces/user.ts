@@ -9,3 +9,7 @@ export interface IUserSignInInput {
   username: string;
   password: string;
 }
+
+export interface IUserSignUpInput extends IUserSignInInput{
+  nickname: string;
+}
