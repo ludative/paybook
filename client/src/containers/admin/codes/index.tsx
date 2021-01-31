@@ -51,14 +51,18 @@ const AdminCodes: React.FC = () => {
     }
 
     const saveCode = async (): Promise<void> => {
-        // TODO. confirm 추가해야함.
-        if (code.id) {
-            await updateCodeApi(code);
-        } else {
-            await addCodeApi(code);
+        try {
+            // TODO. confirm 추가해야함.
+            if (code.id) {
+                await updateCodeApi(code);
+            } else {
+                await addCodeApi(code);
+            }
+            initializeCode();
+            await mutate();
+        } catch (e) {
+            alert(e.data.message)
         }
-        initializeCode();
-        await mutate();
     }
 
     return (
