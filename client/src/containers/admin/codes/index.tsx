@@ -61,7 +61,7 @@ const AdminCodes: React.FC = () => {
             initializeCode();
             await mutate();
         } catch (e) {
-            alert(e.data.message)
+            alert(e.message)
         }
     }
 
