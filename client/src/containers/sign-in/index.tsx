@@ -1,22 +1,52 @@
-import React from 'react';
-import useRequest from '../../utils/swr';
-import { checkUsername } from '../../api/users';
+import React, { useState } from "react";
+import { useHistory } from "react-router";
+import { Button, Form, Header } from "semantic-ui-react";
+import { signIn } from "../../api/users";
+import "../../styles/sign-in.scss";
 
 export default function SignIn() {
-  const {data} = useRequest({url: "/api/codes"})
-  console.log(data)
-  const test = async () => {
+  const history = useHistory();
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const onSubmit = async () => {
     try {
-      const data = await checkUsername('sally')
-      console.log(data);
+      await signIn({
+        username,
+        password,
+      });
+      history.push("/");
     } catch (e) {
-      alert(e.message)
+      alert(e.message);
     }
-  }
+  };
+
   return (
-    <>
-      <p>hello</p>
-      <button onClick={test}>test</button>
-    </>
+    <Form onSubmit={onSubmit} className="UserForm">
+      <Header as="h2">로그인</Header>
+      <Form.Input
+        label="username"
+        placeholder="your username"
+        name="username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
+      <Form.Input
+        type="password"
+        label="비밀번호"
+        placeholder="your password"
+        name="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <Button
+        primary
+        type="submit"
+        onClick={onSubmit}
+        disabled={!username || !password}
+      >
+        로그인
+      </Button>
+    </Form>
   );
 }
