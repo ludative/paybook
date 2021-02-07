@@ -31,7 +31,7 @@ export default function useConfirm() {
         </Modal.Content>
         <Modal.Actions>
           <Button basic color="red" inverted onClick={() => setVisible(false)}>
-            <Icon name="remove" /> No
+            <Icon name="remove" /> 취소
           </Button>
           <Button
             color="green"
@@ -41,7 +41,7 @@ export default function useConfirm() {
               confirmModalInfo.onOk();
             }}
           >
-            <Icon name="checkmark" /> Yes
+            <Icon name="checkmark" /> 확인
           </Button>
         </Modal.Actions>
       </Modal>

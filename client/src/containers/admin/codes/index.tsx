@@ -6,6 +6,7 @@ import {ICode, IGetCodesApi, IModalCode} from "../../../interfaces/ICodes";
 import {CodeDataKeys, CodeTypes} from "../../../enum/codes";
 import {addCodeApi, updateCodeApi} from "../../../api/codes";
 import useConfirm from "../../../hooks/useConfirm";
+import {Icons} from "../../../enum/icons";
 
 const initialCodeData: IModalCode = {
     code: "",
@@ -169,7 +170,7 @@ const AdminCodes: React.FC = () => {
                 onClose={initializeCode}
                 size={"tiny"}
             >
-                <Header icon='archive' content={`${code?.id ? '코드 수정' : '코드 추가'}`} />
+                <Header icon={Icons.ARCHIVE} content={`${code?.id ? '코드 수정' : '코드 추가'}`} />
                 <Modal.Content className={"AdminCodesModalContent"}>
                     <Form>
                         <Form.Field inline>
