@@ -21,7 +21,13 @@ export default function useRequest<Data = unknown>(
       revalidateOnFocus: false,
       errorRetryCount: 0,
       onError: (err: AxiosError<IApiResponseData>):void => {
-        alert(err.response?.data.message)
+        if (err.response?.data.statusCode === 401) {
+            window.location.replace('/sign-in')
+        } else if (err.response?.data.statusCode === 403) {
+            window.location.replace('/')
+        } else {
+            alert(err.response?.data.message)
+        }
       },
       ...config,
     },

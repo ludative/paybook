@@ -29,7 +29,7 @@ export class AuthenticationMiddleware implements NestMiddleware {
         } catch (e) {
             res.clearCookie(CookieNames.ACCESS_TOKEN);
 
-            if (getIsInValidStatus(e.status)) res.redirect('/sign-in');
+            if (getIsInValidStatus(e.status)) throw new UnauthorizedException();
             else throw new InternalServerErrorException(e.message || "INTERVAL_SERVER_ERROR");
         }
     }
@@ -56,8 +56,8 @@ export class AuthenticationAdminMiddleware implements NestMiddleware {
         } catch (e) {
             res.clearCookie(CookieNames.ACCESS_TOKEN);
 
-            if (e.status === 401) res.redirect('/sign-in');
-            else if (e.status === 403) res.redirect('/');
+            if (e.status === 401) throw new UnauthorizedException();
+            else if (e.status === 403) throw new ForbiddenException();
             else throw new InternalServerErrorException(e.message || "INTERVAL_SERVER_ERROR");
         }
     }

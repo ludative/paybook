@@ -5,6 +5,7 @@ import useRequest from "../../../utils/swr";
 import {ICode, IGetCodesApi, IModalCode} from "../../../interfaces/ICodes";
 import {CodeDataKeys, CodeTypes} from "../../../enum/codes";
 import {addCodeApi, updateCodeApi} from "../../../api/codes";
+import useConfirm from "../../../hooks/useConfirm";
 
 const initialCodeData: IModalCode = {
     code: "",
@@ -17,6 +18,7 @@ const AdminCodes: React.FC = () => {
     const {data, mutate} = useRequest<IGetCodesApi>({url: "/api/codes"});
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
     const [code, setCode] = useState<IModalCode>(undefined);
+    const { confirmModal, ModalConfirm } = useConfirm();
 
     const isDisabledModalSave = useMemo<boolean>(() => {
         if (!code) return true;
@@ -50,14 +52,18 @@ const AdminCodes: React.FC = () => {
         setCode(state => ({...state, [key]: e.target.value}))
     }
 
+    const showConfirmModal = () => {
+        confirmModal({
+            message: "코드를 저장하시겠습니까?",
+            onOk: saveCode
+        });
+    }
+
     const saveCode = async (): Promise<void> => {
         try {
-            // TODO. confirm 추가해야함.
-            if (code.id) {
-                await updateCodeApi(code);
-            } else {
-                await addCodeApi(code);
-            }
+            if (code.id) await updateCodeApi(code);
+            else await addCodeApi(code);
+
             initializeCode();
             await mutate();
         } catch (e) {
@@ -188,11 +194,12 @@ const AdminCodes: React.FC = () => {
                     <Button color='red' onClick={initializeCode}>
                         <Icon name='remove' /> 취소
                     </Button>
-                    <Button color='green' disabled={isDisabledModalSave} onClick={saveCode}>
+                    <Button color='green' disabled={isDisabledModalSave} onClick={showConfirmModal}>
                         <Icon name='checkmark' /> 저장
                     </Button>
                 </Modal.Actions>
             </Modal>
+            {ModalConfirm}
         </>
     )
 };

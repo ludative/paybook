@@ -11,7 +11,7 @@ export interface Return<Data>
 }
 
 export interface IApiResponseData<Data = null> {
-  status: number;
+  statusCode: number;
   timestamp: number;
   path: string;
   message?: string
