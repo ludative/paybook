@@ -1,9 +1,9 @@
 import {responseInterface} from 'swr';
 import { AxiosError, AxiosResponse } from 'axios';
 
-export interface Return<Data, Error>
+export interface Return<Data>
   extends Pick<
-    responseInterface<AxiosResponse<IApiResponseData<Data>>, AxiosError<Error>>,
+    responseInterface<AxiosResponse<IApiResponseData<Data>>, AxiosError<IApiResponseData>>,
     'isValidating' | 'revalidate' | 'mutate'
     > {
   data: Data | undefined
@@ -11,7 +11,7 @@ export interface Return<Data, Error>
 }
 
 export interface IApiResponseData<Data = null> {
-  status: number;
+  statusCode: number;
   timestamp: number;
   path: string;
   message?: string

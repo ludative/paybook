@@ -47,10 +47,8 @@ export default function SignUp() {
     setNickname(e.target.value);
   };
   const handleChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e);
     setUsername(e.target.value);
     debounceHandleCheckUsername(e.target.value);
-    // await onCheck(e);
   };
   const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);

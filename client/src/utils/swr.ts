@@ -4,24 +4,30 @@ import { IApiResponseData, Return } from '../interfaces/common';
 
 export type GetRequest = AxiosRequestConfig | null;
 
-export default function useRequest<Data = unknown, Error = unknown>(
+export default function useRequest<Data = unknown>(
   request: GetRequest,
   config: ConfigInterface = {},
-): Return<Data, Error> {
+): Return<Data> {
   const {
     data: response,
     isValidating,
     revalidate,
     mutate,
   } = useSWR<AxiosResponse<IApiResponseData<Data>>,
-    AxiosError<IApiResponseData<Error>>>(
+    AxiosError<IApiResponseData>>(
     request && JSON.stringify(request),
     () => axios(request!),
     {
       revalidateOnFocus: false,
       errorRetryCount: 0,
-      onError: (err: AxiosError<IApiResponseData<Error>>):void => {
-        alert(err.response?.data.message)
+      onError: (err: AxiosError<IApiResponseData>):void => {
+        if (err.response?.data.statusCode === 401) {
+            window.location.replace('/sign-in')
+        } else if (err.response?.data.statusCode === 403) {
+            window.location.replace('/')
+        } else {
+            alert(err.response?.data.message)
+        }
       },
       ...config,
     },
