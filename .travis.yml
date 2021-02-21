@@ -7,13 +7,13 @@ before_install:
 script:
 - docker run -e CI=true ludative/paybook-client-test npm run test
 after_success:
-- docker build -t ludative/paybook-client ./client
-- docker build -t ludative/paybook-server ./server
-- docker build -t ludative/paybook-nginx ./nginx
+- docker build -t ludapaybook/paybook-client ./client
+- docker build -t ludapaybook/paybook-server ./server
+- docker build -t ludapaybook/paybook-nginx ./nginx
 - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_ID" --password-stdin
-- docker push ludative/paybook-client
-- docker push ludative/paybook-server
-- docker push ludative/paybook-nginx
+- docker push ludapaybook/paybook-client
+- docker push ludapaybook/paybook-server
+- docker push ludapaybook/paybook-nginx
 deploy:
   provider: elasticbeanstalk
   region: ap-northeast-2
