@@ -3,21 +3,21 @@
     "containerDefinitions": [
         {
             "name": "client",
-            "image": "ludative/paybook-client",
+            "image": "ludapaybook/paybook-client",
             "hostname": "client",
             "essential": false,
             "memory": 128
         },
         {
             "name": "server",
-            "image": "ludative/paybook-server",
+            "image": "ludapaybook/paybook-server",
             "hostname": "server",
             "essential": false,
             "memory": 128
         },
         {
             "name": "nginx",
-            "image": "ludative/paybook-nginx",
+            "image": "ludapaybook/paybook-nginx",
             "hostname": "nginx",
             "essential": true,
             "portMappings": [
