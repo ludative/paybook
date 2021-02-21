@@ -1,0 +1,25 @@
+#root {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+
+  .payBookContainer {
+    .buttonWrapper {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.selectPayBookType {
+  text-align: center;
+}
+
+.createPayBook {
+  .ui.form .inline.fields {
+    align-items: baseline;
+
+    .ui.button.createCode {
+      margin: 0 10px;
+    }
+  }
+}
