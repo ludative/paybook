@@ -4,6 +4,7 @@ import SignIn from './containers/sign-in';
 import AdminCodes from "./containers/admin/codes";
 import SignUp from './containers/sign-up';
 import PayBooks from "./containers/payBooks";
+import Histories from './containers/histories';
 
 export default function Routes() {
   return (
@@ -12,6 +13,7 @@ export default function Routes() {
         <Route path="/" exact component={PayBooks} />
         <Route path="/sign-in" component={SignIn} />
         <Route path="/sign-up" component={SignUp} />
+        <Route path="/histories" component={Histories} />
         <Route path={"/admin/codes"} component={AdminCodes}/>
         <Route path="*">
           <div>404</div>
