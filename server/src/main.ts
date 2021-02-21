@@ -7,6 +7,7 @@ import { urlencoded, json } from 'body-parser';
 import {ValidationPipe} from "@nestjs/common";
 import {HttpExceptionFilter} from "./filters/http-exception.filter";
 import {ResponseInterceptor} from "./interceptor/response.interceptor";
+import {Envs} from "./enum/common";
 
 const setSwaggerModule = (app: NestExpressApplication): void => {
   const options = new DocumentBuilder()
@@ -29,7 +30,9 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new ResponseInterceptor());
 
-  setSwaggerModule(app);
+  if (process.env.NODE_ENV !== Envs.PRODUCTION) {
+    setSwaggerModule(app);
+  }
 
   await app.listen(PORT);
   console.log(`Server is Running port: ${PORT} 🚀`)
