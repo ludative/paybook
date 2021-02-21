@@ -1,0 +1,32 @@
+language: generic
+sudo: required
+services:
+- docker
+before_install:
+- docker build -t ludative/paybook-client-test -f ./client/Dockerfile.dev ./client
+script:
+- docker run -e CI=true ludative/paybook-client-test npm run test
+after_success:
+- docker build -t ludative/paybook-client ./client
+- docker build -t ludative/paybook-server ./server
+- docker build -t ludative/paybook-nginx ./nginx
+- echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_ID" --password-stdin
+- docker push ludative/paybook-client
+- docker push ludative/paybook-server
+- docker push ludative/paybook-nginx
+deploy:
+  provider: elasticbeanstalk
+  region: ap-northeast-2
+  app: docker-paybook-app
+  env: Dockerpaybookapp-env
+  bucket_name: elasticbeanstalk-ap-northeast-2-244122739731
+  bucket_path: docker-paybook
+  on:
+    branch: main
+  access_key_id: "$AWS_ACCESS_KEY"
+  secret_access_key: "$AWS_SECRET_ACCESS_KEY"
+notifications:
+  slack:
+    on_success: always
+    on_failure: always
+    secure: RBvhF+dB+AeCCuWEvQDV/yrmYzCnDpO1FPfQnXGikDMoDkIrvh/5Fw3KxGf6d8X1W2GKDTrGcgxFLwCPCQEnrI8RblBarrNgHUoQ5ZAxXGZ1kFOIZ7mLbyilNsOazoWII9BxCubWgF8K6bmPXY8/eh18aretNHLpUiejBJInmCh2wt6t5fZW0k2NWkOsVKCLN6X/SpHrE77t+yJuFf/VEDa+tNZDwwUrrjFFqx4eZ8VrszpR+lrP5kGzdzfZNGRyh+iDGkxnbQ7o5ygdZCuJWvf1Yj+pRyYtmN7ReVDF/rfRmyyPWzyxvUBYZkUA5oTxM0d4qy0ASrgT/qvSAqvVm4U+F/JGUYnHLZfUSIsNIlO228zmtoo2NYGUTWx8fIKAdhVM6b7whvE9cFWHdl2jSKJ7DNUzJmGPqzhLPmpmJXriPNv2B4vGJZNUkpAuGd+UZkX4/pXhdn+GwvU320T/QEsNzrMNEPFHT8KAktrtWPsOU0k5rjnuVj/gfSxOj94D1Y48aTAr/me82glu7qJTTPVTdC7YmV7JT+qMY265qJrOuTOZaYv8sOe2biOGD9PZZqRdUHgruxu469wV0MAMFpipJf0qoPixXoigT5uRtAwhskl7bC/V8mA5UXZ9Ry7g21EJgymdKKQyKSzzsIkWRfhvPyGBXns+l8h+gUEwyP0=

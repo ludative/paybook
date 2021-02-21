@@ -1,0 +1,86 @@
+.AdminCodes {
+  &Container {
+    display: flex;
+  }
+
+  &CodeWrapper {
+    flex: 1;
+
+    &:first-child {
+      border-right: 1px solid #333;
+      margin-right: 20px;
+      padding-right: 20px;
+    }
+
+    h3.header {
+      text-align: center;
+    }
+
+    .ui.collapsing.table {
+      width: 100%;
+    }
+
+    .icon {
+      cursor: pointer;
+    }
+  }
+}
+
+.AdminCodesModalContent {
+  .form {
+    .inline.field {
+      & > label {
+        width: 30px !important;
+      }
+
+      .ui.input {
+        width: 250px !important;
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .AdminCodes {
+    &Container {
+      display: block;
+    }
+
+    &CodeWrapper {
+      //flex: 1;
+
+      &:first-child {
+        border-right: none;
+        margin-right: 0;
+        padding-right: 0;
+        margin-bottom: 20px;
+      }
+
+      h3.header {
+        text-align: center;
+      }
+
+      .ui.collapsing.table {
+        width: 100%;
+      }
+
+      .icon {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .AdminCodesModalContent {
+    .form {
+      .inline.field {
+        & > label {
+          width: 30px !important;
+        }
+
+        .ui.input {
+          width: 250px !important;
+        }
+      }
+    }
+  }
+}
